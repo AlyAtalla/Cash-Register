@@ -22,13 +22,18 @@ document.getElementById('purchase-btn').addEventListener('click', function() {
     return;
   }
 
+  if (cash === price) {
+    document.getElementById('change-due').innerText = 'No change due - customer paid with exact cash';
+    return;
+  }
+
   let totalCid = cid.reduce((acc, curr) => acc + curr[1], 0).toFixed(2);
 
   if (parseFloat(totalCid) < changeDue) {
     status = 'INSUFFICIENT_FUNDS';
   } else if (parseFloat(totalCid) === changeDue) {
     status = 'CLOSED';
-    changeArray = cid;
+    changeArray = calculateChange(changeDue, cid).changeArray;
   } else {
     let change = calculateChange(changeDue, cid);
     if (change.totalChange < changeDue) {
